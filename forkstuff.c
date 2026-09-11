@@ -17,21 +17,28 @@ int main(int argc, char *argv[]) {
   char writeBuf[25] = "ready";
   char readBuf[25] = "";
   lseek(fd, 0, SEEK_SET);
+
+
   if (rc == 0) {
     // child
-    printf("hello\n");
-    write(fd, writeBuf, strlen(writeBuf));
+    printf("hello from child\n");
+    char *argv[] ={"/bin/ls", ".", NULL};
+    // strcpy(argv[0], "/usr/");
+    //  write(fd, writeBuf, strlen(writeBuf));
+    if (execlp("pwd","pwd", NULL)) {
+      printf("broken exec call \n");
+    }
   } else {
     // parent
-    lseek(fd, 0, SEEK_SET);
-    int ret = read(fd, readBuf, strlen(writeBuf));
-    while (strcmp(readBuf, "ready") != 0) {
-      sleep(1);
-      printf("waiting...\n");
-      lseek(fd, 0, SEEK_SET);
-      int ret = read(fd, readBuf, strlen(writeBuf));
-      printf("readbuf : %s \n ", readBuf);
-    }
+    // lseek(fd, 0, SEEK_SET);
+    // int ret = read(fd, readBuf, strlen(writeBuf));
+    // while (strcmp(readBuf, "ready") != 0) {
+    // sleep(1);
+    // printf("waiting...\n");
+    // lseek(fd, 0, SEEK_SET);
+    // int ret = read(fd, readBuf, strlen(writeBuf));
+    // printf("readbuf : %s \n ", readBuf);
+    //}
     printf("goodbye\n");
     fclose(fopen("./text.txt", "w"));
   }
