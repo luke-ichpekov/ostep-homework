@@ -18,16 +18,18 @@ int main(int argc, char *argv[]) {
   char readBuf[25] = "";
   lseek(fd, 0, SEEK_SET);
 
+printf("main pid :%d \n", getpid());
   if (rc == 0) {
     // child
     printf("hello from child\n");
+    pid_t rt = wait(&rc);
+    printf("after waiting in child : pid : %d  \n", rt);
     // char *argv[] = {"/bin/ls", ".", NULL};
     // if (execlp("pwd", "pwd", NULL)) {
     // printf("broken exec call \n");
     //}
   } else {
+printf("parent pid :%d \n", rc);
     printf("waiting for my child (%d) ..... \n ", rc);
-    pid_t rt = wait(&rc);
-    printf("goodbye from parent : pid : %d  \n", rt);
   }
 }
