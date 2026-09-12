@@ -18,28 +18,16 @@ int main(int argc, char *argv[]) {
   char readBuf[25] = "";
   lseek(fd, 0, SEEK_SET);
 
-
   if (rc == 0) {
     // child
     printf("hello from child\n");
-    char *argv[] ={"/bin/ls", ".", NULL};
-    // strcpy(argv[0], "/usr/");
-    //  write(fd, writeBuf, strlen(writeBuf));
-    if (execlp("pwd","pwd", NULL)) {
-      printf("broken exec call \n");
-    }
-  } else {
-    // parent
-    // lseek(fd, 0, SEEK_SET);
-    // int ret = read(fd, readBuf, strlen(writeBuf));
-    // while (strcmp(readBuf, "ready") != 0) {
-    // sleep(1);
-    // printf("waiting...\n");
-    // lseek(fd, 0, SEEK_SET);
-    // int ret = read(fd, readBuf, strlen(writeBuf));
-    // printf("readbuf : %s \n ", readBuf);
+    // char *argv[] = {"/bin/ls", ".", NULL};
+    // if (execlp("pwd", "pwd", NULL)) {
+    // printf("broken exec call \n");
     //}
-    printf("goodbye\n");
-    fclose(fopen("./text.txt", "w"));
+  } else {
+    printf("waiting for my child (%d) ..... \n ", rc);
+    pid_t rt = wait(&rc);
+    printf("goodbye from parent : pid : %d  \n", rt);
   }
 }
